@@ -4,12 +4,10 @@ from .reusableCode.Location import Location
 
 class GeoLocation(View):
     def get(self, request):
-        return JsonResponse({"myLocation":Location.my_location()})
+        return JsonResponse({"myLocation":Location.my_location(request.GET.get("mLocation"))})
 
     def post(self, request):
-        my_location = Location.my_location()
-        dest_location = Location.get_location_by_address(request.POST.get('dLocation'))
-        
-        return JsonResponse({"myLocation": my_location, "destLocation": dest_location})
+        distance = Location.distance_from_my_Location(request.POST.get('dLocation'))
+        return JsonResponse({"minDistance": distance*1.1,"maxDistance": distance*1.2})
 
     
